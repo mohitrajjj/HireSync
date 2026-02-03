@@ -17,6 +17,7 @@ export default function RecruiterDashboard() {
   const [appFilterSkill, setAppFilterSkill] = useState("");
   const [appFilterName, setAppFilterName] = useState("");
   const [appFilterStatus, setAppFilterStatus] = useState("");
+  const [appExcludeStatus, setAppExcludeStatus] = useState(false);
   const { addToast } = useToast();
 
   const loadJobs = async () => {
@@ -29,7 +30,10 @@ export default function RecruiterDashboard() {
       const params = {};
       if (appFilterSkill) params.skill = appFilterSkill;
       if (appFilterName) params.name = appFilterName;
-      if (appFilterStatus) params.status = appFilterStatus;
+      if (appFilterStatus) {
+        if (appExcludeStatus) params.excludeStatus = appFilterStatus;
+        else params.status = appFilterStatus;
+      }
 
       const data = await getApplicants(jobId, params);
       setApplicants(data);
@@ -48,11 +52,12 @@ export default function RecruiterDashboard() {
       await updateApplicationStatus(id, status);
       // refresh applicants after status change
       if (selectedJob) {
-        const data = await getApplicants(selectedJob, {
-          skill: appFilterSkill,
-          name: appFilterName,
-          status: appFilterStatus,
-        });
+        const params = { skill: appFilterSkill, name: appFilterName };
+        if (appFilterStatus) {
+          if (appExcludeStatus) params.excludeStatus = appFilterStatus;
+          else params.status = appFilterStatus;
+        }
+        const data = await getApplicants(selectedJob, params);
         setApplicants(data);
       }
       addToast("Status updated", "success");
@@ -115,6 +120,10 @@ export default function RecruiterDashboard() {
                 <option value="accepted">Accepted</option>
                 <option value="rejected">Rejected</option>
               </select>
+              <label className="flex items-center gap-2">
+                <input type="checkbox" checked={appExcludeStatus} onChange={(e) => setAppExcludeStatus(e.target.checked)} />
+                <span className="text-sm">Exclude status</span>
+              </label>
               <button onClick={() => viewApplicants(selectedJob)} className="bg-slate-700 text-white px-3 py-1 rounded">Apply Filters</button>
             </div>
 

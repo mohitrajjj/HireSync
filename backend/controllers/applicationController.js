@@ -36,18 +36,23 @@ const applyJob = async (req, res) => {
 // Supports optional query params: status, skill, name
 const getApplicantsByJob = async (req, res) => {
   try {
-    const { status, skill, name } = req.query;
+    const { status, excludeStatus, skill, name } = req.query;
 
     // Debug logging to aid troubleshooting
-    console.log(`GET APPLICANTS: requester=${req.user?._id} role=${req.user?.role} jobId=${req.params.jobId}`);
+    console.log(`GET APPLICANTS: requester=${req.user?._id} role=${req.user?.role} jobId=${req.params.jobId} status=${status} excludeStatus=${excludeStatus}`);
 
     let applications = await Application.find({ job: req.params.jobId }).populate("student", "-password name email skills");
 
     console.log(`Found ${applications.length} total applications for job ${req.params.jobId}`);
 
-    // Filter by status
+    // Filter by status (inclusive)
     if (status) {
       applications = applications.filter((a) => a.status === status);
+    }
+
+    // Filter by excludeStatus (exclusive)
+    if (excludeStatus) {
+      applications = applications.filter((a) => a.status !== excludeStatus);
     }
 
     // Filter by student skill
