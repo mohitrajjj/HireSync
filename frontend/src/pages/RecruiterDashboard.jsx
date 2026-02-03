@@ -6,12 +6,18 @@ import {
 } from "../services/recruiter";
 import CreateJobForm from "../components/CreateJobForm";
 import ApplicationChart from "../components/ApplicationChart";
+import AnalyticsPanel from "../components/AnalyticsPanel";
 import { logout } from "../services/auth";
+import { useToast } from "../components/ToastProvider";
 
 export default function RecruiterDashboard() {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [applicants, setApplicants] = useState([]);
+  const [appFilterSkill, setAppFilterSkill] = useState("");
+  const [appFilterName, setAppFilterName] = useState("");
+  const [appFilterStatus, setAppFilterStatus] = useState("");
+  const { addToast } = useToast();
 
   const loadJobs = async () => {
     const data = await getMyJobs();
@@ -19,9 +25,40 @@ export default function RecruiterDashboard() {
   };
 
   const viewApplicants = async (jobId) => {
-    const data = await getApplicants(jobId);
-    setApplicants(data);
-    setSelectedJob(jobId);
+    try {
+      const params = {};
+      if (appFilterSkill) params.skill = appFilterSkill;
+      if (appFilterName) params.name = appFilterName;
+      if (appFilterStatus) params.status = appFilterStatus;
+
+      const data = await getApplicants(jobId, params);
+      setApplicants(data);
+      setSelectedJob(jobId);
+    } catch (err) {
+      console.error("VIEW APPLICANTS ERROR:", err);
+      setApplicants([]);
+      setSelectedJob(null);
+      addToast("Failed to load applicants. Make sure you're logged in as a recruiter.", "error");
+    }
+  };
+
+  const handleUpdateStatus = async (id, status) => {
+    try {
+      await updateApplicationStatus(id, status);
+      // refresh applicants after status change
+      if (selectedJob) {
+        const data = await getApplicants(selectedJob, {
+          skill: appFilterSkill,
+          name: appFilterName,
+          status: appFilterStatus,
+        });
+        setApplicants(data);
+      }
+      addToast("Status updated", "success");
+    } catch (err) {
+      console.error("UPDATE STATUS ERROR:", err);
+      addToast("Failed to update application status.", "error");
+    }
   };
 
   const chartData = [
@@ -46,6 +83,10 @@ export default function RecruiterDashboard() {
 
         <CreateJobForm onCreated={loadJobs} />
 
+        {/* Analytics */}
+        <AnalyticsPanel />
+
+
         <h2 className="text-xl font-semibold mb-3">My Jobs</h2>
 
         {jobs.map(job => (
@@ -64,15 +105,28 @@ export default function RecruiterDashboard() {
           <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="font-bold mb-2">Applicants</h2>
 
+            <div className="mb-3 flex gap-3 items-center">
+              <input placeholder="Filter by skill" value={appFilterSkill} onChange={(e) => setAppFilterSkill(e.target.value)} className="border px-3 py-1 rounded" />
+              <input placeholder="Filter by name" value={appFilterName} onChange={(e) => setAppFilterName(e.target.value)} className="border px-3 py-1 rounded" />
+              <select value={appFilterStatus} onChange={(e) => setAppFilterStatus(e.target.value)} className="border px-3 py-1 rounded">
+                <option value="">All</option>
+                <option value="applied">Applied</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button onClick={() => viewApplicants(selectedJob)} className="bg-slate-700 text-white px-3 py-1 rounded">Apply Filters</button>
+            </div>
+
             {applicants.map(a => (
               <div key={a._id} className="border-b py-3">
-                <p className="font-medium">{a.student.name}</p>
-                <p className="text-sm">{a.student.email}</p>
+                <p className="font-medium">{a.student?.name || '(no name)'}</p>
+                <p className="text-sm">{a.student?.email}</p>
 
                 {a.resume && (
                   <a
-                    href={`http://localhost:5001${a.resume}`}
+                    href={`http://localhost:5001/${a.resume}`}
                     target="_blank"
+                    rel="noreferrer"
                     className="text-blue-600 text-sm"
                   >
                     View Resume
@@ -80,18 +134,22 @@ export default function RecruiterDashboard() {
                 )}
 
                 <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => updateApplicationStatus(a._id, "accepted")}
-                    className="bg-green-600 text-white px-3 py-1 rounded text-sm"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => updateApplicationStatus(a._id, "rejected")}
-                    className="bg-red-600 text-white px-3 py-1 rounded text-sm"
-                  >
-                    Reject
-                  </button>
+                  {a.status === "applied" && (
+                    <>
+                      <button
+                        onClick={() => handleUpdateStatus(a._id, "accepted")}
+                        className="bg-green-600 text-white px-3 py-1 rounded text-sm"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleUpdateStatus(a._id, "rejected")}
+                        className="bg-red-600 text-white px-3 py-1 rounded text-sm"
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
                 </div>
 
                 <span className="text-xs text-blue-600">

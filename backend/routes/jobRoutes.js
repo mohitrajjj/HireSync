@@ -35,9 +35,29 @@ router.post("/", protect, recruiterOnly, async (req, res) => {
  */
 router.get("/", async (req, res) => {
   try {
-    const jobs = await Job.find()
+    const { search, skill, location, page = 1, limit = 20 } = req.query;
+    const query = {};
+
+    if (search) {
+      const regex = new RegExp(search, "i");
+      query.$or = [{ title: regex }, { description: regex }, { companyName: regex }];
+    }
+
+    if (location) {
+      query.location = new RegExp(location, "i");
+    }
+
+    if (skill) {
+      query.skillsRequired = { $in: [skill] };
+    }
+
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const jobs = await Job.find(query)
       .populate("recruiter", "name email")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
 
     res.json(jobs);
   } catch (err) {

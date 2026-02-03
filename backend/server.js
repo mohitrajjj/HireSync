@@ -16,6 +16,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/jobs", require("./routes/jobRoutes"));
 app.use("/api/applications", require("./routes/applicationRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/analytics", require("./routes/analyticsRoutes"));
 
 app.listen(5001, () => {
   console.log("🚀 Server running on port 5001");
