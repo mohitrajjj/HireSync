@@ -116,7 +116,7 @@ const updateApplicationStatus = async (req, res) => {
 // Update application fields (Recruiter)
 const updateApplicationFields = async (req, res) => {
   try {
-    const { notes, interviewLink } = req.body;
+    const { notes, interviewLink, interviewDate } = req.body;
 
     const application = await Application.findById(req.params.id);
 
@@ -126,6 +126,7 @@ const updateApplicationFields = async (req, res) => {
 
     if (typeof notes === "string") application.notes = notes;
     if (typeof interviewLink === "string") application.interviewLink = interviewLink;
+    if (interviewDate) application.interviewDate = new Date(interviewDate);
 
     await application.save();
 

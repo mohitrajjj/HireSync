@@ -8,6 +8,8 @@ export default function CreateJobForm({ onCreated }) {
     companyName: "",
     location: "",
     jobType: "Full-Time",
+    salaryMin: "",
+    salaryMax: "",
     skillsRequired: "",
   });
 
@@ -20,6 +22,8 @@ export default function CreateJobForm({ onCreated }) {
 
     await createJob({
       ...form,
+      salaryMin: form.salaryMin ? Number(form.salaryMin) : undefined,
+      salaryMax: form.salaryMax ? Number(form.salaryMax) : undefined,
       skillsRequired: form.skillsRequired.split(",").map(s => s.trim()),
     });
 
@@ -30,6 +34,8 @@ export default function CreateJobForm({ onCreated }) {
       companyName: "",
       location: "",
       jobType: "Full-Time",
+      salaryMin: "",
+      salaryMax: "",
       skillsRequired: "",
     });
   };
@@ -41,6 +47,16 @@ export default function CreateJobForm({ onCreated }) {
       <input name="title" placeholder="Job Title" value={form.title} onChange={handleChange} required className="w-full border p-2 rounded" />
       <input name="companyName" placeholder="Company Name" value={form.companyName} onChange={handleChange} required className="w-full border p-2 rounded" />
       <input name="location" placeholder="Location" value={form.location} onChange={handleChange} required className="w-full border p-2 rounded" />
+      <select name="jobType" value={form.jobType} onChange={handleChange} className="w-full border p-2 rounded">
+        <option value="Full-Time">Full-Time</option>
+        <option value="Part-Time">Part-Time</option>
+        <option value="Internship">Internship</option>
+        <option value="Contract">Contract</option>
+      </select>
+      <div className="grid grid-cols-2 gap-3">
+        <input name="salaryMin" placeholder="Min Salary" value={form.salaryMin} onChange={handleChange} className="w-full border p-2 rounded" />
+        <input name="salaryMax" placeholder="Max Salary" value={form.salaryMax} onChange={handleChange} className="w-full border p-2 rounded" />
+      </div>
       <input name="skillsRequired" placeholder="Skills (comma separated)" value={form.skillsRequired} onChange={handleChange} className="w-full border p-2 rounded" />
       <textarea name="description" placeholder="Job Description" value={form.description} onChange={handleChange} className="w-full border p-2 rounded" />
 

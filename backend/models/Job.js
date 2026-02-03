@@ -7,6 +7,8 @@ const jobSchema = new mongoose.Schema(
     companyName: { type: String, required: true },
     location: { type: String, required: true },
     jobType: { type: String, default: "Full-Time" },
+    salaryMin: { type: Number },
+    salaryMax: { type: Number },
     skillsRequired: [{ type: String }],
     recruiter: {
       type: mongoose.Schema.Types.ObjectId,

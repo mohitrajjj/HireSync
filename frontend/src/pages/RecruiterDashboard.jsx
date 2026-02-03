@@ -27,6 +27,7 @@ export default function RecruiterDashboard() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [notesDraft, setNotesDraft] = useState({});
   const [linkDraft, setLinkDraft] = useState({});
+  const [dateDraft, setDateDraft] = useState({});
   const [debouncedName, setDebouncedName] = useState("");
   const [debouncedSkill, setDebouncedSkill] = useState("");
   const { addToast } = useToast();
@@ -113,12 +114,20 @@ export default function RecruiterDashboard() {
       await updateApplicationFields(id, {
         notes: notesDraft[id] || "",
         interviewLink: linkDraft[id] || "",
+        interviewDate: dateDraft[id] || "",
       });
       addToast("Notes saved", "success");
     } catch (err) {
       console.error("SAVE NOTES ERROR:", err);
       addToast("Failed to save notes.", "error");
     }
+  };
+
+  const formatDateTimeLocal = (value) => {
+    if (!value) return "";
+    const d = new Date(value);
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   };
 
   const toggleSelect = (id) => {
@@ -357,7 +366,7 @@ export default function RecruiterDashboard() {
                   )}
                 </div>
 
-                <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
                     <label className="text-xs text-slate-500">Recruiter notes</label>
                     <textarea
@@ -374,6 +383,15 @@ export default function RecruiterDashboard() {
                       onChange={(e) => setLinkDraft((prev) => ({ ...prev, [a._id]: e.target.value }))}
                       className="w-full border rounded p-2 text-sm"
                       placeholder="https://meet..."
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-500">Interview date</label>
+                    <input
+                      type="datetime-local"
+                      value={dateDraft[a._id] ?? formatDateTimeLocal(a.interviewDate)}
+                      onChange={(e) => setDateDraft((prev) => ({ ...prev, [a._id]: e.target.value }))}
+                      className="w-full border rounded p-2 text-sm"
                     />
                   </div>
                 </div>

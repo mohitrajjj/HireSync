@@ -29,6 +29,9 @@ const applicationSchema = new mongoose.Schema(
     interviewLink: {
       type: String,
     },
+    interviewDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

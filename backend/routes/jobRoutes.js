@@ -17,6 +17,8 @@ router.post("/", protect, recruiterOnly, async (req, res) => {
       companyName: req.body.companyName,
       location: req.body.location,
       jobType: req.body.jobType || "Full-Time",
+      salaryMin: req.body.salaryMin,
+      salaryMax: req.body.salaryMax,
       skillsRequired: req.body.skillsRequired,
       recruiter: req.user._id,
     });
@@ -35,7 +37,7 @@ router.post("/", protect, recruiterOnly, async (req, res) => {
  */
 router.get("/", async (req, res) => {
   try {
-    const { search, skill, location, page = 1, limit = 20 } = req.query;
+    const { search, skill, location, jobType, minSalary, maxSalary, page = 1, limit = 20 } = req.query;
     const query = {};
 
     if (search) {
@@ -47,11 +49,27 @@ router.get("/", async (req, res) => {
       query.location = new RegExp(location, "i");
     }
 
+    if (jobType) {
+      query.jobType = jobType;
+    }
+
     if (skill) {
       query.skillsRequired = { $in: [skill] };
     }
 
+    if (minSalary || maxSalary) {
+      query.$and = query.$and || [];
+      if (minSalary) {
+        query.$and.push({ salaryMax: { $gte: Number(minSalary) } });
+      }
+      if (maxSalary) {
+        query.$and.push({ salaryMin: { $lte: Number(maxSalary) } });
+      }
+    }
+
     const skip = (Number(page) - 1) * Number(limit);
+
+    const total = await Job.countDocuments(query);
 
     const jobs = await Job.find(query)
       .populate("recruiter", "name email")
@@ -59,7 +77,7 @@ router.get("/", async (req, res) => {
       .skip(skip)
       .limit(Number(limit));
 
-    res.json(jobs);
+    res.json({ items: jobs, total, page: Number(page), limit: Number(limit) });
   } catch (err) {
     console.error("GET JOBS ERROR:", err);
     res.status(500).json({ message: "Failed to fetch jobs" });

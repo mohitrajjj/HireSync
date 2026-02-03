@@ -80,6 +80,20 @@ export default function Profile() {
               <input ref={fileRef} type="file" accept="application/pdf" onChange={(e) => setResumeFile(e.target.files[0])} />
             </label>
 
+            {profile?.resumeHistory?.length > 0 && (
+              <div className="bg-slate-50 p-3 rounded">
+                <h4 className="font-semibold mb-2">Resume history</h4>
+                <ul className="text-sm text-slate-700 list-disc pl-4">
+                  {profile.resumeHistory.map((r, idx) => (
+                    <li key={idx}>
+                      <a href={`http://localhost:5001/${r.path}`} target="_blank" rel="noreferrer" className="text-blue-600">Previous resume</a>
+                      {r.uploadedAt ? ` • ${new Date(r.uploadedAt).toLocaleString()}` : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div className="flex gap-3">
               <button type="submit" className="bg-slate-900 text-white px-4 py-2 rounded">Save</button>
             </div>

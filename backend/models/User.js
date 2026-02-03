@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema(
     skills: [{ type: String }],
     bio: { type: String },
     resume: { type: String },
+    resumeHistory: [
+      {
+        path: { type: String },
+        uploadedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

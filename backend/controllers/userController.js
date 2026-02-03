@@ -32,6 +32,10 @@ const updateMyProfile = async (req, res) => {
     }
 
     if (req.file) {
+      if (user.resume) {
+        user.resumeHistory = user.resumeHistory || [];
+        user.resumeHistory.unshift({ path: user.resume, uploadedAt: user.updatedAt || new Date() });
+      }
       user.resume = req.file.path; // stored path
     }
 
