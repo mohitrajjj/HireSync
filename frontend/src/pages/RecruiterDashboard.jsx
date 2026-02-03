@@ -35,10 +35,11 @@ export default function RecruiterDashboard() {
       setApplicants(data);
       setSelectedJob(jobId);
     } catch (err) {
-      console.error("VIEW APPLICANTS ERROR:", err);
+      console.error("VIEW APPLICANTS ERROR:", err, err.response?.data);
       setApplicants([]);
       setSelectedJob(null);
-      addToast("Failed to load applicants. Make sure you're logged in as a recruiter.", "error");
+      const msg = err.response?.data?.message || "Failed to load applicants. Make sure you're logged in as a recruiter.";
+      addToast(msg, "error");
     }
   };
 
