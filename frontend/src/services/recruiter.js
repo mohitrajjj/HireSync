@@ -19,3 +19,13 @@ export const updateApplicationStatus = async (id, status) => {
   const res = await api.put(`/applications/${id}/status`, { status });
   return res.data;
 };
+
+export const updateApplicationFields = async (id, fields) => {
+  const res = await api.patch(`/applications/${id}`, fields);
+  return res.data;
+};
+
+export const bulkUpdateApplicationStatus = async (ids, status) => {
+  const res = await api.put(`/applications/bulk-status`, { ids, status });
+  return res.data;
+};

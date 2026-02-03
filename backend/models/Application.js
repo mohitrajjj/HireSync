@@ -20,6 +20,15 @@ const applicationSchema = new mongoose.Schema(
     resume: {
       type: String,
     },
+    resumeSize: {
+      type: Number,
+    },
+    notes: {
+      type: String,
+    },
+    interviewLink: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
