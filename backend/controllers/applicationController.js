@@ -38,7 +38,12 @@ const getApplicantsByJob = async (req, res) => {
   try {
     const { status, skill, name } = req.query;
 
+    // Debug logging to aid troubleshooting
+    console.log(`GET APPLICANTS: requester=${req.user?._id} role=${req.user?.role} jobId=${req.params.jobId}`);
+
     let applications = await Application.find({ job: req.params.jobId }).populate("student", "-password name email skills");
+
+    console.log(`Found ${applications.length} total applications for job ${req.params.jobId}`);
 
     // Filter by status
     if (status) {
@@ -58,6 +63,7 @@ const getApplicantsByJob = async (req, res) => {
 
     res.json(applications);
   } catch (error) {
+    console.error('GET APPLICANTS ERROR:', error);
     res.status(500).json({ message: error.message });
   }
 };
