@@ -34,13 +34,15 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900">
-      <div className="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl p-8">
-        <h1 className="text-3xl font-extrabold text-center text-white mb-2">
+    <div className="page-shell flex items-center justify-center px-6 py-10">
+      <div className="w-full max-w-md card-glass p-8 relative overflow-hidden">
+        <div className="absolute -top-16 -right-10 w-40 h-40 rounded-full bg-fuchsia-500/20 blur-3xl" />
+        <div className="absolute -bottom-20 -left-10 w-48 h-48 rounded-full bg-cyan-400/20 blur-3xl" />
+        <h1 className="text-4xl font-extrabold text-center text-white mb-1 tracking-tight">
           HireSync
         </h1>
-        <p className="text-center text-slate-400 mb-6">
-          Smart recruitment starts here
+        <p className="text-center text-slate-300 mb-6">
+          Smart recruitment, but make it ✨
         </p>
 
         {error && (
@@ -49,7 +51,7 @@ export default function Login() {
           </p>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
           <div>
             <label className="block text-sm text-slate-300 mb-1">
               Email
@@ -60,7 +62,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-4 py-2 rounded-xl bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white"
+              className="input-glass"
             />
           </div>
 
@@ -74,22 +76,22 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-2 rounded-xl bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white"
+              className="input-glass"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white text-slate-900 py-2 rounded-xl font-semibold hover:bg-slate-200 transition disabled:opacity-50"
+            className="w-full btn-primary disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-slate-400 mt-6">
+        <p className="text-center text-sm text-slate-300 mt-6">
           Don’t have an account?{" "}
-          <a href="/signup" className="text-white font-medium">
+          <a href="/signup" className="text-white font-semibold">
             Sign up
           </a>
         </p>

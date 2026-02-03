@@ -16,31 +16,31 @@ export default function JobCard({ job, onApply, applied, match, missingSkills = 
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-5">
+    <div className="card-glass p-5">
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="text-xl font-bold mb-1">{job.title}</h2>
-          <p className="text-slate-600 text-sm mb-2">{job.companyName} • {job.location} • {job.jobType || ""}</p>
+          <h2 className="text-xl font-bold mb-1 text-white">{job.title}</h2>
+          <p className="text-slate-300 text-sm mb-2">{job.companyName} • {job.location} • {job.jobType || ""}</p>
           {(job.salaryMin || job.salaryMax) && (
-            <p className="text-slate-500 text-xs mb-2">
+            <p className="text-slate-400 text-xs mb-2">
               Salary: {job.salaryMin ? `$${job.salaryMin}` : ""}{job.salaryMin && job.salaryMax ? " - " : ""}{job.salaryMax ? `$${job.salaryMax}` : ""}
             </p>
           )}
         </div>
         {typeof match === 'number' && (
-          <div className="text-sm text-slate-700 bg-slate-100 px-2 py-1 rounded">
+          <div className="text-sm text-slate-200 bg-white/10 px-2 py-1 rounded">
             Match: <strong>{match}%</strong>
           </div>
         )}
       </div>
 
-      <p className="text-slate-700 mb-3">{job.description}</p>
+      <p className="text-slate-200/90 mb-3">{job.description}</p>
 
       <div className="flex flex-wrap gap-2 mb-4">
         {(job.skillsRequired || []).map((skill, i) => (
           <span
             key={i}
-            className="text-xs bg-slate-200 px-2 py-1 rounded"
+            className="chip"
           >
             {skill}
           </span>
@@ -48,7 +48,7 @@ export default function JobCard({ job, onApply, applied, match, missingSkills = 
       </div>
 
       {showReasons && missingSkills.length > 0 && (
-        <p className="text-xs text-slate-600 mb-3">
+        <p className="text-xs text-slate-300 mb-3">
           Skills gap: {missingSkills.join(", ")}
         </p>
       )}
@@ -65,14 +65,14 @@ export default function JobCard({ job, onApply, applied, match, missingSkills = 
         <button
           onClick={handleClick}
           disabled={applied}
-          className={`px-4 py-2 rounded-lg ${applied ? "bg-gray-400 text-white" : "bg-slate-900 text-white"}`}
+          className={`px-4 py-2 rounded-xl ${applied ? "bg-white/20 text-white" : "btn-primary"}`}
         >
           {applied ? "Applied" : "Apply"}
         </button>
         {onToggleSave && (
           <button
             onClick={() => onToggleSave(job._id)}
-            className={`px-4 py-2 rounded-lg ${saved ? "bg-slate-200 text-slate-900" : "bg-white border"}`}
+            className={`px-4 py-2 rounded-xl ${saved ? "bg-white/20 text-white" : "btn-ghost"}`}
           >
             {saved ? "Saved" : "Save"}
           </button>

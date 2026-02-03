@@ -41,26 +41,26 @@ export default function CreateJobForm({ onCreated }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow mb-6 space-y-3">
-      <h2 className="text-xl font-bold">Post a Job</h2>
+    <form onSubmit={handleSubmit} className="card-glass p-6 mb-6 space-y-3">
+      <h2 className="section-title">Post a Job</h2>
 
-      <input name="title" placeholder="Job Title" value={form.title} onChange={handleChange} required className="w-full border p-2 rounded" />
-      <input name="companyName" placeholder="Company Name" value={form.companyName} onChange={handleChange} required className="w-full border p-2 rounded" />
-      <input name="location" placeholder="Location" value={form.location} onChange={handleChange} required className="w-full border p-2 rounded" />
-      <select name="jobType" value={form.jobType} onChange={handleChange} className="w-full border p-2 rounded">
+      <input name="title" placeholder="Job Title" value={form.title} onChange={handleChange} required className="input-glass" />
+      <input name="companyName" placeholder="Company Name" value={form.companyName} onChange={handleChange} required className="input-glass" />
+      <input name="location" placeholder="Location" value={form.location} onChange={handleChange} required className="input-glass" />
+      <select name="jobType" value={form.jobType} onChange={handleChange} className="select-glass">
         <option value="Full-Time">Full-Time</option>
         <option value="Part-Time">Part-Time</option>
         <option value="Internship">Internship</option>
         <option value="Contract">Contract</option>
       </select>
       <div className="grid grid-cols-2 gap-3">
-        <input name="salaryMin" placeholder="Min Salary" value={form.salaryMin} onChange={handleChange} className="w-full border p-2 rounded" />
-        <input name="salaryMax" placeholder="Max Salary" value={form.salaryMax} onChange={handleChange} className="w-full border p-2 rounded" />
+        <input name="salaryMin" placeholder="Min Salary" value={form.salaryMin} onChange={handleChange} className="input-glass" />
+        <input name="salaryMax" placeholder="Max Salary" value={form.salaryMax} onChange={handleChange} className="input-glass" />
       </div>
-      <input name="skillsRequired" placeholder="Skills (comma separated)" value={form.skillsRequired} onChange={handleChange} className="w-full border p-2 rounded" />
-      <textarea name="description" placeholder="Job Description" value={form.description} onChange={handleChange} className="w-full border p-2 rounded" />
+      <input name="skillsRequired" placeholder="Skills (comma separated)" value={form.skillsRequired} onChange={handleChange} className="input-glass" />
+      <textarea name="description" placeholder="Job Description" value={form.description} onChange={handleChange} className="input-glass" />
 
-      <button className="bg-slate-900 text-white px-4 py-2 rounded">
+      <button className="btn-primary">
         Post Job
       </button>
     </form>

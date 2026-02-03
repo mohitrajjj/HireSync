@@ -213,11 +213,11 @@ export default function RecruiterDashboard() {
   }, [debouncedName, debouncedSkill, appFilterStatus, appExcludeStatus, appSort, appPage, appLimit]);
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="page-shell px-6 py-10">
+      <div className="max-w-6xl mx-auto">
         <div className="flex justify-between mb-4">
-          <h1 className="text-2xl font-bold">Recruiter Dashboard</h1>
-          <button onClick={logout} className="bg-black text-white px-4 py-2 rounded">
+          <h1 className="text-3xl font-bold tracking-tight">Recruiter Dashboard</h1>
+          <button onClick={logout} className="btn-dark">
             Logout
           </button>
         </div>
@@ -228,17 +228,17 @@ export default function RecruiterDashboard() {
         <AnalyticsPanel />
 
 
-        <h2 className="text-xl font-semibold mb-3">My Jobs</h2>
+        <h2 className="section-title mb-3">My Jobs</h2>
 
         {jobs.map(job => (
-          <div key={job._id} className="bg-white p-4 rounded shadow mb-3">
-            <h3 className="font-bold">{job.title}</h3>
+          <div key={job._id} className="card-glass p-4 mb-3">
+            <h3 className="font-bold text-white">{job.title}</h3>
             <button
               onClick={() => {
                 setAppPage(1);
                 viewApplicants(job);
               }}
-              className="mt-2 bg-slate-800 text-white px-3 py-1 rounded"
+              className="mt-2 btn-primary"
             >
               View Applicants
             </button>
@@ -246,67 +246,67 @@ export default function RecruiterDashboard() {
         ))}
 
         {selectedJob && (
-          <div className="mt-6 bg-white p-4 rounded shadow">
+          <div className="mt-6 card-glass p-4">
             <h2 className="font-bold mb-2">Applicants</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-              <div className="bg-slate-50 p-3 rounded">
-                <p className="text-xs text-slate-500">Total</p>
+              <div className="card-soft p-3">
+                <p className="text-xs text-slate-400">Total</p>
                 <p className="text-lg font-semibold">{appTotal}</p>
               </div>
-              <div className="bg-slate-50 p-3 rounded">
-                <p className="text-xs text-slate-500">Applied</p>
+              <div className="card-soft p-3">
+                <p className="text-xs text-slate-400">Applied</p>
                 <p className="text-lg font-semibold">{applicants.filter(a => a.status === "applied").length}</p>
               </div>
-              <div className="bg-slate-50 p-3 rounded">
-                <p className="text-xs text-slate-500">Accepted</p>
+              <div className="card-soft p-3">
+                <p className="text-xs text-slate-400">Accepted</p>
                 <p className="text-lg font-semibold">{applicants.filter(a => a.status === "accepted").length}</p>
               </div>
-              <div className="bg-slate-50 p-3 rounded">
-                <p className="text-xs text-slate-500">Rejected</p>
+              <div className="card-soft p-3">
+                <p className="text-xs text-slate-400">Rejected</p>
                 <p className="text-lg font-semibold">{applicants.filter(a => a.status === "rejected").length}</p>
               </div>
             </div>
 
-            <div className="mb-3 flex gap-3 items-center">
-              <input placeholder="Filter by skill" value={appFilterSkill} onChange={(e) => setAppFilterSkill(e.target.value)} className="border px-3 py-1 rounded" />
-              <input placeholder="Filter by name" value={appFilterName} onChange={(e) => setAppFilterName(e.target.value)} className="border px-3 py-1 rounded" />
-              <select value={appFilterStatus} onChange={(e) => setAppFilterStatus(e.target.value)} className="border px-3 py-1 rounded">
+            <div className="mb-3 flex flex-wrap gap-3 items-center">
+              <input placeholder="Filter by skill" value={appFilterSkill} onChange={(e) => setAppFilterSkill(e.target.value)} className="input-glass" />
+              <input placeholder="Filter by name" value={appFilterName} onChange={(e) => setAppFilterName(e.target.value)} className="input-glass" />
+              <select value={appFilterStatus} onChange={(e) => setAppFilterStatus(e.target.value)} className="select-glass">
                 <option value="">All</option>
                 <option value="applied">Applied</option>
                 <option value="accepted">Accepted</option>
                 <option value="rejected">Rejected</option>
               </select>
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-sm text-slate-200">
                 <input type="checkbox" checked={appExcludeStatus} onChange={(e) => setAppExcludeStatus(e.target.checked)} />
                 <span className="text-sm">Exclude status</span>
               </label>
-              <select value={appSort} onChange={(e) => setAppSort(e.target.value)} className="border px-3 py-1 rounded">
+              <select value={appSort} onChange={(e) => setAppSort(e.target.value)} className="select-glass">
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
               </select>
-              <button onClick={() => viewApplicants(selectedJob)} className="bg-slate-700 text-white px-3 py-1 rounded">Apply Filters</button>
+              <button onClick={() => viewApplicants(selectedJob)} className="btn-ghost">Apply Filters</button>
             </div>
 
             <div className="mb-3 flex gap-2 flex-wrap">
-              <button onClick={() => { setAppFilterStatus(""); setAppExcludeStatus(false); }} className="border px-3 py-1 rounded text-sm">All</button>
-              <button onClick={() => { setAppFilterStatus("applied"); setAppExcludeStatus(false); }} className="border px-3 py-1 rounded text-sm">Applied</button>
-              <button onClick={() => { setAppFilterStatus("accepted"); setAppExcludeStatus(false); }} className="border px-3 py-1 rounded text-sm">Accepted</button>
-              <button onClick={() => { setAppFilterStatus("rejected"); setAppExcludeStatus(false); }} className="border px-3 py-1 rounded text-sm">Rejected</button>
+              <button onClick={() => { setAppFilterStatus(""); setAppExcludeStatus(false); }} className="btn-ghost text-sm">All</button>
+              <button onClick={() => { setAppFilterStatus("applied"); setAppExcludeStatus(false); }} className="btn-ghost text-sm">Applied</button>
+              <button onClick={() => { setAppFilterStatus("accepted"); setAppExcludeStatus(false); }} className="btn-ghost text-sm">Accepted</button>
+              <button onClick={() => { setAppFilterStatus("rejected"); setAppExcludeStatus(false); }} className="btn-ghost text-sm">Rejected</button>
             </div>
 
             <div className="mb-3 flex gap-2 items-center">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-sm text-slate-200">
                 <input type="checkbox" checked={selectedIds.length === applicants.length && applicants.length > 0} onChange={toggleSelectAll} />
                 <span className="text-sm">Select all</span>
               </label>
-              <button onClick={() => handleBulkUpdate("accepted")} className="bg-green-600 text-white px-3 py-1 rounded text-sm">Bulk Accept</button>
-              <button onClick={() => handleBulkUpdate("rejected")} className="bg-red-600 text-white px-3 py-1 rounded text-sm">Bulk Reject</button>
-              <button onClick={exportCsv} className="bg-slate-800 text-white px-3 py-1 rounded text-sm">Export CSV</button>
+              <button onClick={() => handleBulkUpdate("accepted")} className="btn-primary text-sm">Bulk Accept</button>
+              <button onClick={() => handleBulkUpdate("rejected")} className="btn-primary text-sm">Bulk Reject</button>
+              <button onClick={exportCsv} className="btn-ghost text-sm">Export CSV</button>
             </div>
 
             {applicants.map(a => (
-              <div key={a._id} className="border-b py-3">
+              <div key={a._id} className="border-b border-white/10 py-3">
                 <div className="flex items-center gap-3">
                   <input type="checkbox" checked={selectedIds.includes(a._id)} onChange={() => toggleSelect(a._id)} />
                   <div>
@@ -316,11 +316,11 @@ export default function RecruiterDashboard() {
                   <span className={`text-xs px-2 py-1 rounded ${getStatusClass(a.status)}`}>Status: {a.status}</span>
                 </div>
 
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   Applied: {a.createdAt ? new Date(a.createdAt).toLocaleString() : "—"}
                 </p>
 
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   Match: {calcMatch(a.student?.skills || [], selectedJob?.skillsRequired || [])}%
                 </p>
 
@@ -330,19 +330,19 @@ export default function RecruiterDashboard() {
                       href={`http://localhost:5001/${a.resume}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-blue-600 text-sm"
+                      className="text-cyan-300 text-sm"
                     >
                       View Resume
                     </a>
                     <a
                       href={`http://localhost:5001/${a.resume}`}
                       download
-                      className="text-blue-600 text-sm"
+                      className="text-cyan-300 text-sm"
                     >
                       Download
                     </a>
                     {a.resumeSize ? (
-                      <span className="text-xs text-slate-500">{formatSize(a.resumeSize)}</span>
+                      <span className="text-xs text-slate-400">{formatSize(a.resumeSize)}</span>
                     ) : null}
                   </div>
                 )}
@@ -352,13 +352,13 @@ export default function RecruiterDashboard() {
                     <>
                       <button
                         onClick={() => handleUpdateStatus(a._id, "accepted")}
-                        className="bg-green-600 text-white px-3 py-1 rounded text-sm"
+                        className="btn-primary text-sm"
                       >
                         Accept
                       </button>
                       <button
                         onClick={() => handleUpdateStatus(a._id, "rejected")}
-                        className="bg-red-600 text-white px-3 py-1 rounded text-sm"
+                        className="btn-primary text-sm"
                       >
                         Reject
                       </button>
@@ -372,7 +372,7 @@ export default function RecruiterDashboard() {
                     <textarea
                       value={notesDraft[a._id] ?? a.notes ?? ""}
                       onChange={(e) => setNotesDraft((prev) => ({ ...prev, [a._id]: e.target.value }))}
-                      className="w-full border rounded p-2 text-sm"
+                      className="input-glass text-sm"
                       rows={2}
                     />
                   </div>
@@ -381,7 +381,7 @@ export default function RecruiterDashboard() {
                     <input
                       value={linkDraft[a._id] ?? a.interviewLink ?? ""}
                       onChange={(e) => setLinkDraft((prev) => ({ ...prev, [a._id]: e.target.value }))}
-                      className="w-full border rounded p-2 text-sm"
+                      className="input-glass text-sm"
                       placeholder="https://meet..."
                     />
                   </div>
@@ -391,13 +391,13 @@ export default function RecruiterDashboard() {
                       type="datetime-local"
                       value={dateDraft[a._id] ?? formatDateTimeLocal(a.interviewDate)}
                       onChange={(e) => setDateDraft((prev) => ({ ...prev, [a._id]: e.target.value }))}
-                      className="w-full border rounded p-2 text-sm"
+                      className="input-glass text-sm"
                     />
                   </div>
                 </div>
                 <button
                   onClick={() => saveNotes(a._id)}
-                  className="mt-2 bg-slate-800 text-white px-3 py-1 rounded text-sm"
+                  className="mt-2 btn-ghost text-sm"
                 >
                   Save Notes
                 </button>
@@ -408,7 +408,7 @@ export default function RecruiterDashboard() {
               <button
                 disabled={appPage <= 1}
                 onClick={() => setAppPage((p) => Math.max(1, p - 1))}
-                className="border px-3 py-1 rounded text-sm disabled:opacity-50"
+                className="btn-ghost text-sm disabled:opacity-50"
               >
                 Prev
               </button>
@@ -416,11 +416,11 @@ export default function RecruiterDashboard() {
               <button
                 disabled={appPage * appLimit >= appTotal}
                 onClick={() => setAppPage((p) => p + 1)}
-                className="border px-3 py-1 rounded text-sm disabled:opacity-50"
+                className="btn-ghost text-sm disabled:opacity-50"
               >
                 Next
               </button>
-              <select value={appLimit} onChange={(e) => { setAppPage(1); setAppLimit(Number(e.target.value)); }} className="border px-3 py-1 rounded text-sm">
+              <select value={appLimit} onChange={(e) => { setAppPage(1); setAppLimit(Number(e.target.value)); }} className="select-glass text-sm">
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>

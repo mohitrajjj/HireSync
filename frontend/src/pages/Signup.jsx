@@ -38,13 +38,15 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900">
-      <div className="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl p-8">
-        <h1 className="text-3xl font-extrabold text-center text-white mb-2">
+    <div className="page-shell flex items-center justify-center px-6 py-10">
+      <div className="w-full max-w-md card-glass p-8 relative overflow-hidden">
+        <div className="absolute -top-16 -right-10 w-40 h-40 rounded-full bg-indigo-500/20 blur-3xl" />
+        <div className="absolute -bottom-20 -left-10 w-48 h-48 rounded-full bg-emerald-400/20 blur-3xl" />
+        <h1 className="text-4xl font-extrabold text-center text-white mb-1 tracking-tight">
           HireSync
         </h1>
-        <p className="text-center text-slate-400 mb-6">
-          Create your account
+        <p className="text-center text-slate-300 mb-6">
+          Create your account ✨
         </p>
 
         {error && (
@@ -53,14 +55,14 @@ export default function Signup() {
           </p>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
           <input
             type="text"
             placeholder="Full Name"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 rounded-xl bg-slate-700 text-white focus:outline-none"
+            className="input-glass"
           />
 
           <input
@@ -69,7 +71,7 @@ export default function Signup() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 rounded-xl bg-slate-700 text-white focus:outline-none"
+            className="input-glass"
           />
 
           <input
@@ -78,13 +80,13 @@ export default function Signup() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 rounded-xl bg-slate-700 text-white focus:outline-none"
+            className="input-glass"
           />
 
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            className="w-full px-4 py-2 rounded-xl bg-slate-700 text-white"
+            className="select-glass"
           >
             <option value="student">Student</option>
             <option value="recruiter">Recruiter</option>
@@ -93,7 +95,7 @@ export default function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white text-slate-900 py-2 rounded-xl font-semibold"
+            className="w-full btn-primary disabled:opacity-50"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>

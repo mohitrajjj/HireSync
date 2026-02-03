@@ -23,18 +23,18 @@ export default function AnalyticsPanel() {
     load();
   }, []);
 
-  if (loading) return <div className="p-4"><Spinner size={1.5}/> Loading analytics...</div>;
-  if (!data) return <div className="p-4">No analytics available</div>;
+  if (loading) return <div className="p-4 card-soft"><Spinner size={1.5}/> Loading analytics...</div>;
+  if (!data) return <div className="p-4 card-soft">No analytics available</div>;
 
   const COLORS = ['#22c55e', '#ef4444', '#64748b', '#f59e0b', '#3b82f6'];
 
   return (
-    <div className="mt-6 bg-white p-4 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Analytics</h2>
+    <div className="mt-6 card-glass p-4">
+      <h2 className="section-title mb-4">Analytics</h2>
 
       <div className="grid md:grid-cols-3 gap-4">
         <div className="col-span-1">
-          <h3 className="font-medium mb-2">Applications by Status</h3>
+          <h3 className="font-medium mb-2 text-slate-200">Applications by Status</h3>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie data={data.applicationsByStatus} dataKey="value" nameKey="name" label>
@@ -48,7 +48,7 @@ export default function AnalyticsPanel() {
         </div>
 
         <div className="col-span-2">
-          <h3 className="font-medium mb-2">Applications Over Time (last 14 days)</h3>
+          <h3 className="font-medium mb-2 text-slate-200">Applications Over Time (last 14 days)</h3>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={data.applicationsOverTime}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -63,9 +63,9 @@ export default function AnalyticsPanel() {
       </div>
 
       <div className="mt-6">
-        <h3 className="font-medium mb-2">Top Applicant Skills</h3>
+        <h3 className="font-medium mb-2 text-slate-200">Top Applicant Skills</h3>
         {data.skillsDistribution.length === 0 ? (
-          <p>No skill data</p>
+          <p className="text-slate-300">No skill data</p>
         ) : (
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={data.skillsDistribution} layout="vertical">
