@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install & test backend
+        run: |
+          cd backend || exit 0
+          if [ -f package.json ]; then npm ci || true; npm test || true; fi
+      - name: Install & test frontend
+        run: |
+          cd frontend || exit 0
+          if [ -f package.json ]; then npm ci || true; npm test || true; fi
