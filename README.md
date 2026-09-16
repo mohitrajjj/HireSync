@@ -1,5 +1,8 @@
 # HireSync
 
+
+[![CI](https://github.com/mohitrajjj/HireSync/actions/workflows/ci.yml/badge.svg)](https://github.com/mohitrajjj/HireSync/actions/workflows/ci.yml)
+
 A full-stack recruitment platform where recruiters post jobs and manage applicants, and candidates browse jobs and track their application status — built to replace the usual manual, spreadsheet-based hiring process with something real-time.
 
 I built this solo as a MERN-stack project, with CI/CD and automated tests set up from the start.
